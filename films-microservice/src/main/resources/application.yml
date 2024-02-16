@@ -1,0 +1,16 @@
+server:
+  port: 8003
+
+spring:
+  application:
+    name: films-microservice
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://localhost:2023/jwt-tutorial
+    username: postgres
+    password: root
+  jpa:
+    hibernate:
+      ddl-auto: create
+    database: postgresql
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
