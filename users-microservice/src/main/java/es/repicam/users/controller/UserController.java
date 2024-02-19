@@ -2,6 +2,8 @@ package es.repicam.users.controller;
 
 import es.repicam.users.dto.UserResponse;
 import es.repicam.users.dto.UserRequest;
+import es.repicam.users.model.Book;
+import es.repicam.users.model.Film;
 import es.repicam.users.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -18,7 +20,7 @@ public class UserController {
     private UserService userService;
 
     @PostMapping
-    public @ResponseBody ResponseEntity<UserResponse> createUser(@RequestBody UserRequest userRequest) {
+    public @ResponseBody ResponseEntity<UserResponse> saveUser(@RequestBody UserRequest userRequest) {
         UserResponse newUser = userService.save(userRequest);
         if (newUser == null)
             return ResponseEntity.badRequest().build();
@@ -42,5 +44,23 @@ public class UserController {
             return ResponseEntity.notFound().build();
 
         return ResponseEntity.ok(user);
+    }
+
+    @PostMapping("/{userId}/add-book")
+    public @ResponseBody ResponseEntity<UserResponse> saveBook(@PathVariable String userId, @RequestBody Book book) {
+        UserResponse userResponse = userService.saveBook(userId, book);
+        if (userResponse == null)
+            return ResponseEntity.badRequest().build();
+
+        return ResponseEntity.ok(userResponse);
+    }
+
+    @PostMapping("/{userId}/add-film")
+    public @ResponseBody ResponseEntity<UserResponse> saveFilm(@PathVariable String userId, @RequestBody Film film) {
+        UserResponse userResponse = userService.saveFilm(userId, film);
+        if (userResponse == null)
+            return ResponseEntity.badRequest().build();
+
+        return ResponseEntity.ok(userResponse);
     }
 }

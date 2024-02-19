@@ -1,0 +1,40 @@
+package es.repicam.users.service;
+
+import es.repicam.users.dto.FilmFeign;
+import es.repicam.users.http.FilmFeignClient;
+import es.repicam.users.model.Film;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.List;
+
+@Service
+public class FilmService {
+
+    private Logger logger = LoggerFactory.getLogger(FilmService.class);
+
+    @Autowired
+    private FilmFeignClient filmFeignClient;
+
+    public Film save(FilmFeign film) {
+
+        try {
+            return filmFeignClient.saveFilm(film);
+        } catch (Exception exc) {
+            logger.error(exc.getMessage());
+        }
+
+        return null;
+    }
+
+    public List<Film> getByUserId(String userId) {
+        List<Film> filmList = filmFeignClient.getFilmsByUserId(userId);
+        if (filmList == null)
+            return new ArrayList<>();
+
+        return filmList;
+    }
+}

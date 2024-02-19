@@ -19,7 +19,7 @@ public class FilmController {
     private FilmService filmService;
 
     @PostMapping
-    public @ResponseBody ResponseEntity<FilmResponse> createFilm(@RequestBody FilmRequest filmRequest) {
+    public @ResponseBody ResponseEntity<FilmResponse> saveFilm(@RequestBody FilmRequest filmRequest) {
         FilmResponse newFilm = filmService.save(filmRequest);
         if (newFilm == null)
             return ResponseEntity.badRequest().build();
