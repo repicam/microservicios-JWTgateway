@@ -1,5 +1,7 @@
 package es.repicam.books.service;
 
+import es.repicam.books.dto.BookRequest;
+import es.repicam.books.dto.BookResponse;
 import es.repicam.books.entity.Book;
 import es.repicam.books.repository.BookRepository;
 import org.slf4j.Logger;
@@ -17,18 +19,31 @@ public class BookService {
     @Autowired
     private BookRepository bookRepository;
 
-    public List<Book> getAll() {
-        return bookRepository.findAll();
+    public List<BookResponse> getAll() {
+        return BookResponse.buildByEntityList(bookRepository.findAll());
     }
 
-    public Book getById(Long id) {
-        return bookRepository.findById(id).orElse(null);
+    public BookResponse getById(Long id) {
+        Book book = bookRepository.findById(id).orElse(null);
+        if (book == null)
+            return new BookResponse();
+
+        return BookResponse.builder().
+                id(id).
+                title(book.getTitle()).
+                author(book.getAuthor()).
+                build();
     }
 
-    public Book save(Book book) {
+    public BookResponse save(BookRequest bookRequest) {
 
         try {
-            return bookRepository.save(book);
+             Book newBook = bookRepository.save(Book.buildByRequest(bookRequest));
+            return BookResponse.builder().
+                    id(newBook.getId()).
+                    title(newBook.getTitle()).
+                    author(newBook.getAuthor()).
+                    build();
         } catch (Exception exc) {
             logger.error(exc.getMessage());
         }
@@ -36,7 +51,7 @@ public class BookService {
         return null;
     }
 
-    public List<Book> getByUserId(String userId){
-        return bookRepository.findByUserId(userId);
+    public List<BookResponse> getByUserId(String userId){
+        return BookResponse.buildByEntityList(bookRepository.findByUserId(userId));
     }
 }

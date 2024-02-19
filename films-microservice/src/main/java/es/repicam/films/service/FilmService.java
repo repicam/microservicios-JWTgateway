@@ -1,5 +1,7 @@
 package es.repicam.films.service;
 
+import es.repicam.films.dto.FilmRequest;
+import es.repicam.films.dto.FilmResponse;
 import es.repicam.films.entity.Film;
 import es.repicam.films.repository.FilmRepository;
 import org.slf4j.Logger;
@@ -17,18 +19,31 @@ public class FilmService {
     @Autowired
     private FilmRepository filmRepository;
 
-    public List<Film> getAll() {
-        return filmRepository.findAll();
+    public List<FilmResponse> getAll() {
+        return FilmResponse.buildByEntityList(filmRepository.findAll());
     }
 
-    public Film getById(Long id) {
-        return filmRepository.findById(id).orElse(null);
+    public FilmResponse getById(Long id) {
+        Film film = filmRepository.findById(id).orElse(null);
+        if (film == null)
+            return new FilmResponse();
+
+        return FilmResponse.builder().
+                id(id).
+                title(film.getTitle()).
+                year(film.getYear()).
+                build();
     }
 
-    public Film save(Film film) {
+    public FilmResponse save(FilmRequest filmRequest) {
 
         try {
-            return filmRepository.save(film);
+            Film newFilm = filmRepository.save(Film.buildByRequest(filmRequest));
+            return FilmResponse.builder().
+                    id(newFilm.getId()).
+                    title(newFilm.getTitle()).
+                    year(newFilm.getYear()).
+                    build();
         } catch (Exception exc) {
             logger.error(exc.getMessage());
         }
@@ -36,7 +51,7 @@ public class FilmService {
         return null;
     }
 
-    public List<Film> getByUserId(String userId){
-        return filmRepository.findByUserId(userId);
+    public List<FilmResponse> getByUserId(String userId){
+        return FilmResponse.buildByEntityList(filmRepository.findByUserId(userId));
     }
 }

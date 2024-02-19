@@ -1,5 +1,7 @@
 package es.repicam.users.service;
 
+import es.repicam.users.dto.UserRequest;
+import es.repicam.users.dto.UserResponse;
 import es.repicam.users.entity.User;
 import es.repicam.users.repository.UserRepository;
 import org.slf4j.Logger;
@@ -17,18 +19,28 @@ public class UserService {
     @Autowired
     private UserRepository userRepository;
 
-    public List<User> getAll() {
-        return userRepository.findAll();
+    public List<UserResponse> getAll() {
+        return UserResponse.buildByEntityList(userRepository.findAll());
     }
 
-    public User getById(String id) {
-        return userRepository.findById(id).orElse(null);
+    public UserResponse getById(String id) {
+        User user = userRepository.findById(id).orElse(null);
+        if (user == null)
+            return new UserResponse();
+
+        //llamada otra info (book y film)
+        return UserResponse.builder().
+                username(user.getUsername()).
+                build();
     }
 
-    public User save(User user) {
+    public UserResponse save(UserRequest userRequest) {
 
         try {
-            return userRepository.save(user);
+            userRepository.save(User.buildByRequest(userRequest));
+            return UserResponse.builder().
+                    username(userRequest.getUsername()).
+                    build();
         } catch (Exception exc) {
             logger.error(exc.getMessage());
         }

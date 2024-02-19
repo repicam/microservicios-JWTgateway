@@ -1,6 +1,7 @@
 package es.repicam.books.controller;
 
-import es.repicam.books.entity.Book;
+import es.repicam.books.dto.BookResponse;
+import es.repicam.books.dto.BookRequest;
 import es.repicam.books.service.BookService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -17,34 +18,38 @@ public class BookController {
     private BookService bookService;
 
     @PostMapping
-    public @ResponseBody ResponseEntity<Book> createBook(@RequestBody Book book) {
-        Book newBook = bookService.save(book);
+    public @ResponseBody ResponseEntity<BookResponse> createBook(@RequestBody BookRequest bookRequest) {
+        BookResponse newBook = bookService.save(bookRequest);
         if (newBook == null)
             return ResponseEntity.badRequest().build();
+
         return ResponseEntity.status(HttpStatus.CREATED).body(newBook);
     }
 
     @GetMapping
-    public @ResponseBody ResponseEntity<List<Book>> getAll() {
-        List<Book> bookList = bookService.getAll();
+    public @ResponseBody ResponseEntity<List<BookResponse>> getAll() {
+        List<BookResponse> bookList = bookService.getAll();
         if (bookList.isEmpty())
             return ResponseEntity.noContent().build();
+
         return ResponseEntity.ok(bookList);
     }
 
     @GetMapping("/{id}")
-    public @ResponseBody ResponseEntity<Book> getById(@PathVariable Long id) {
-        Book book = bookService.getById(id);
+    public @ResponseBody ResponseEntity<BookResponse> getById(@PathVariable Long id) {
+        BookResponse book = bookService.getById(id);
         if (book == null)
             return ResponseEntity.notFound().build();
+
         return ResponseEntity.ok(book);
     }
 
     @GetMapping("/user/{userId}")
-    public @ResponseBody ResponseEntity<List<Book>> getByUserId(@PathVariable String userId) {
-        List<Book> userBookList = bookService.getByUserId(userId);
+    public @ResponseBody ResponseEntity<List<BookResponse>> getByUserId(@PathVariable String userId) {
+        List<BookResponse> userBookList = bookService.getByUserId(userId);
         if (userBookList.isEmpty())
             return ResponseEntity.noContent().build();
+
         return ResponseEntity.ok(userBookList);
     }
 }

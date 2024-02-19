@@ -1,5 +1,6 @@
 package es.repicam.users.entity;
 
+import es.repicam.users.dto.UserRequest;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -8,7 +9,7 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-@Document(collection = "usuarios")
+@Document(collection = "users")
 @Data
 @Builder
 @AllArgsConstructor
@@ -20,4 +21,14 @@ public class User {
     @Indexed(unique = true)
     private String username;
     private String password;
+
+    public static User buildByRequest(UserRequest request) {
+        if (request == null)
+            return null;
+
+        return User.builder().
+                username(request.getUsername()).
+                password(request.getPassword()).
+                build();
+    }
 }

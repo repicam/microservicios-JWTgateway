@@ -1,5 +1,6 @@
 package es.repicam.films.entity;
 
+import es.repicam.films.dto.FilmRequest;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -21,4 +22,15 @@ public class Film {
     private Long year;
     @Column(name = "user_id")
     private String userId;
+
+    public static Film buildByRequest(FilmRequest request) {
+        if (request == null)
+            return null;
+
+        return Film.builder().
+                title(request.getTitle()).
+                year(request.getYear()).
+                userId(request.getUserId()).
+                build();
+    }
 }

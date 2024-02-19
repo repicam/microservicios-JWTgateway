@@ -1,6 +1,7 @@
 package es.repicam.users.controller;
 
-import es.repicam.users.entity.User;
+import es.repicam.users.dto.UserResponse;
+import es.repicam.users.dto.UserRequest;
 import es.repicam.users.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -17,26 +18,29 @@ public class UserController {
     private UserService userService;
 
     @PostMapping
-    public @ResponseBody ResponseEntity<User> createUser(@RequestBody User user) {
-        User newUser = userService.save(user);
+    public @ResponseBody ResponseEntity<UserResponse> createUser(@RequestBody UserRequest userRequest) {
+        UserResponse newUser = userService.save(userRequest);
         if (newUser == null)
             return ResponseEntity.badRequest().build();
+
         return ResponseEntity.status(HttpStatus.CREATED).body(newUser);
     }
 
     @GetMapping
-    public @ResponseBody ResponseEntity<List<User>> getAll() {
-        List<User> userList = userService.getAll();
+    public @ResponseBody ResponseEntity<List<UserResponse>> getAll() {
+        List<UserResponse> userList = userService.getAll();
         if (userList.isEmpty())
             return ResponseEntity.noContent().build();
+
         return ResponseEntity.ok(userList);
     }
 
     @GetMapping("/{id}")
-    public @ResponseBody ResponseEntity<User> getById(@PathVariable String id) {
-        User user = userService.getById(id);
+    public @ResponseBody ResponseEntity<UserResponse> getById(@PathVariable String id) {
+        UserResponse user = userService.getById(id);
         if (user == null)
             return ResponseEntity.notFound().build();
+
         return ResponseEntity.ok(user);
     }
 }
