@@ -2,8 +2,6 @@ server:
   port: 8003
 
 spring:
-  application:
-    name: films-microservice
   datasource:
     driver-class-name: org.postgresql.Driver
     url: jdbc:postgresql://localhost:2023/jwt-tutorial
