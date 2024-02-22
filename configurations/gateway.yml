@@ -1,0 +1,30 @@
+server:
+  port: 8000
+
+eureka:
+  client:
+    service-url:
+      default-zone: http://localhost:8761/eureka
+  instance:
+    hostname: localhost
+
+spring:
+  cloud:
+    gateway:
+      discovery:
+        locator:
+          enabled: true
+      mvc:
+        routesMap:
+          films-microservice:
+            uri: lb://films-microservice
+            predicates:
+              - Path=/api/film/**
+          books-microservice:
+            uri: lb://books-microservice
+            predicates:
+              - Path=/api/book/**
+          users-microservice:
+            uri:  lb://users-microservice
+            predicates:
+              - Path=/api/user/**
