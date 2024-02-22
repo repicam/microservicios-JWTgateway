@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@FeignClient(name = "books-microservice", url = "localhost:8002/api/book")
+@FeignClient(name = "books-microservice", path = "/api/book")
 public interface BookFeignClient {
 
     @PostMapping

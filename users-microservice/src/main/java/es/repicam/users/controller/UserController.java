@@ -46,7 +46,7 @@ public class UserController {
         return ResponseEntity.ok(user);
     }
 
-    @PostMapping("/{userId}/add-book")
+    @PostMapping("/{userId}/book")
     public @ResponseBody ResponseEntity<UserResponse> saveBook(@PathVariable String userId, @RequestBody Book book) {
         UserResponse userResponse = userService.saveBook(userId, book);
         if (userResponse == null)
@@ -55,7 +55,7 @@ public class UserController {
         return ResponseEntity.ok(userResponse);
     }
 
-    @PostMapping("/{userId}/add-film")
+    @PostMapping("/{userId}/film")
     public @ResponseBody ResponseEntity<UserResponse> saveFilm(@PathVariable String userId, @RequestBody Film film) {
         UserResponse userResponse = userService.saveFilm(userId, film);
         if (userResponse == null)

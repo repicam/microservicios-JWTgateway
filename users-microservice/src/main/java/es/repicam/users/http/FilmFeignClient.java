@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.List;
 
-@FeignClient(name = "films-microservice", url = "localhost:8003/api/film")
+@FeignClient(name = "films-microservice", path = "/api/film")
 public interface FilmFeignClient {
 
     @PostMapping
