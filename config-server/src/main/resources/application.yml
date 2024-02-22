@@ -5,7 +5,8 @@ spring:
     config:
       server:
         git:
-          default-label: master
+          #default-label: master
+          default-label: eurekaServer
           uri: https://github.com/repicam/microservicios-JWTgateway
           search-paths: configurations
   application:

@@ -7,3 +7,10 @@ spring:
       database: jwt-tutorial
       auto-create-collection: true
       auto-index-creation: true
+
+eureka:
+  client:
+    service-url:
+      default-zone: http://localhost:8761/eureka
+    instance:
+      hostname: localhost
