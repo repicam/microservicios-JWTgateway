@@ -25,6 +25,6 @@ spring:
             predicates:
               - Path=/api/book/**
           users-microservice:
-            uri:  lb://users-microservice
+            uri: lb://users-microservice
             predicates:
               - Path=/api/user/**
