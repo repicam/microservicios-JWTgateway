@@ -6,7 +6,7 @@ spring:
       server:
         git:
           #default-label: master
-          default-label: gateway
+          default-label: circuitBreaker
           uri: https://github.com/repicam/microservicios-JWTgateway
           search-paths: configurations
   application:

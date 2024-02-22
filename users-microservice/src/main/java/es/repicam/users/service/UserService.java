@@ -33,12 +33,12 @@ public class UserService {
         return UserResponse.buildByEntityList(userRepository.findAll());
     }
 
-    public UserResponse getById(String id) {
+    public UserResponse getById(String id, boolean circuitBreaker) {
         User user = userRepository.findById(id).orElse(null);
         if (user == null)
             return new UserResponse();
 
-        return refillUserByEntity(user);
+        return refillUserByEntity(user, circuitBreaker);
     }
 
     public UserResponse save(UserRequest userRequest) {
@@ -69,7 +69,7 @@ public class UserService {
                     build();
             bookService.save(bookFeign);
 
-            return refillUserByEntity(user);
+            return refillUserByEntity(user, false);
         } catch (Exception exc) {
             logger.error(exc.getMessage());
         }
@@ -91,7 +91,7 @@ public class UserService {
                     build();
             filmService.save(filmFeign);
 
-            return refillUserByEntity(user);
+            return refillUserByEntity(user, false);
         } catch (Exception exc) {
             logger.error(exc.getMessage());
         }
@@ -99,7 +99,12 @@ public class UserService {
         return null;
     }
 
-    private UserResponse refillUserByEntity(User user){
+    private UserResponse refillUserByEntity(User user, boolean circuitBreaker){
+        if (circuitBreaker)
+            return UserResponse.builder().
+                    username(user.getUsername()).
+                    build();
+
         List<Book> bookList = bookService.getByUserId(user.getId());
         List<Film> filmList = filmService.getByUserId(user.getId());
 

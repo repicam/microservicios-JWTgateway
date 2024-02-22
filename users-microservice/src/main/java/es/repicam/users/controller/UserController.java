@@ -5,6 +5,7 @@ import es.repicam.users.dto.UserRequest;
 import es.repicam.users.model.Book;
 import es.repicam.users.model.Film;
 import es.repicam.users.service.UserService;
+import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -37,15 +38,17 @@ public class UserController {
         return ResponseEntity.ok(userList);
     }
 
+    @CircuitBreaker(name = "allCB", fallbackMethod = "fallBackGetAll")
     @GetMapping("/{id}")
     public @ResponseBody ResponseEntity<UserResponse> getById(@PathVariable String id) {
-        UserResponse user = userService.getById(id);
+        UserResponse user = userService.getById(id, false);
         if (user == null)
             return ResponseEntity.notFound().build();
 
         return ResponseEntity.ok(user);
     }
 
+    @CircuitBreaker(name = "allCB", fallbackMethod = "fallBackSaveBooks")
     @PostMapping("/{userId}/book")
     public @ResponseBody ResponseEntity<UserResponse> saveBook(@PathVariable String userId, @RequestBody Book book) {
         UserResponse userResponse = userService.saveBook(userId, book);
@@ -55,6 +58,7 @@ public class UserController {
         return ResponseEntity.ok(userResponse);
     }
 
+    @CircuitBreaker(name = "allCB", fallbackMethod = "fallBackSaveFilms")
     @PostMapping("/{userId}/film")
     public @ResponseBody ResponseEntity<UserResponse> saveFilm(@PathVariable String userId, @RequestBody Film film) {
         UserResponse userResponse = userService.saveFilm(userId, film);
@@ -62,5 +66,29 @@ public class UserController {
             return ResponseEntity.badRequest().build();
 
         return ResponseEntity.ok(userResponse);
+    }
+
+    private @ResponseBody ResponseEntity<UserResponse> fallBackGetAll(@PathVariable String id, RuntimeException re) {
+        UserResponse user = userService.getById(id, true);
+        if (user == null)
+            return ResponseEntity.notFound().build();
+
+        return ResponseEntity.ok(user);
+    }
+
+    private @ResponseBody ResponseEntity<UserResponse> fallBackSaveBooks(@PathVariable String userId, @RequestBody Book book, RuntimeException re) {
+        UserResponse user = userService.getById(userId, true);
+        if (user == null)
+            return ResponseEntity.notFound().build();
+
+        return ResponseEntity.ok(user);
+    }
+
+    private @ResponseBody ResponseEntity<UserResponse> fallBackSaveFilms(@PathVariable String userId, @RequestBody Film film, RuntimeException re) {
+        UserResponse user = userService.getById(userId, true);
+        if (user == null)
+            return ResponseEntity.notFound().build();
+
+        return ResponseEntity.ok(user);
     }
 }
