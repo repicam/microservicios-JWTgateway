@@ -18,6 +18,7 @@ import java.util.List;
 public class UserResponse {
 
     private String username;
+    private String id;
     private List<Film> films;
     private List<Book> books;
 
@@ -29,6 +30,7 @@ public class UserResponse {
         for (User user : userList) {
             dtoList.add(UserResponse.builder().
                     username(user.getUsername()).
+                    id(user.getId()).
                     build());
         }
 
