@@ -1,7 +1,5 @@
 package es.repicam.users.service;
 
-import es.repicam.users.dto.BookFeign;
-import es.repicam.users.dto.FilmFeign;
 import es.repicam.users.dto.UserRequest;
 import es.repicam.users.dto.UserResponse;
 import es.repicam.users.entity.User;
@@ -44,9 +42,10 @@ public class UserService {
     public UserResponse save(UserRequest userRequest) {
 
         try {
-            userRepository.save(User.buildByRequest(userRequest));
+            User user = userRepository.save(User.buildByRequest(userRequest));
             return UserResponse.builder().
                     username(userRequest.getUsername()).
+                    id(user.getId()).
                     build();
         } catch (Exception exc) {
             logger.error(exc.getMessage());
@@ -61,20 +60,9 @@ public class UserService {
         if (user == null)
             return null;
 
-        try {
-            BookFeign bookFeign = BookFeign.builder().
-                    author(book.getAuthor()).
-                    title(book.getTitle()).
-                    userId(userId).
-                    build();
-            bookService.save(bookFeign);
+        bookService.save(book, userId);
 
-            return refillUserByEntity(user, false);
-        } catch (Exception exc) {
-            logger.error(exc.getMessage());
-        }
-
-        return null;
+        return refillUserByEntity(user, false);
     }
 
     public UserResponse saveFilm(String userId, Film film) {
@@ -83,35 +71,33 @@ public class UserService {
         if (user == null)
             return null;
 
-        try {
-            FilmFeign filmFeign = FilmFeign.builder().
-                    title(film.getTitle()).
-                    year(film.getYear()).
-                    userId(userId).
-                    build();
-            filmService.save(filmFeign);
+        filmService.save(film, userId);
 
-            return refillUserByEntity(user, false);
-        } catch (Exception exc) {
-            logger.error(exc.getMessage());
-        }
-
-        return null;
+        return refillUserByEntity(user, false);
     }
 
     private UserResponse refillUserByEntity(User user, boolean circuitBreaker){
-        if (circuitBreaker)
+        /*if (circuitBreaker)
             return UserResponse.builder().
                     username(user.getUsername()).
+                    id(user.getId()).
+                    build();*/
+
+        try {
+            List<Book> bookList = bookService.getByUserId(user.getId());
+            List<Film> filmList = filmService.getByUserId(user.getId());
+
+            return UserResponse.builder().
+                    username(user.getUsername()).
+                    id(user.getId()).
+                    books(bookList).
+                    films(filmList).
                     build();
-
-        List<Book> bookList = bookService.getByUserId(user.getId());
-        List<Film> filmList = filmService.getByUserId(user.getId());
-
-        return UserResponse.builder().
-                username(user.getUsername()).
-                books(bookList).
-                films(filmList).
-                build();
+        } catch (Exception exc) {
+            return UserResponse.builder().
+                    username(user.getUsername()).
+                    id(user.getId()).
+                    build();
+        }
     }
 }

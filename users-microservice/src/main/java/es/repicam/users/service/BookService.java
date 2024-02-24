@@ -19,15 +19,14 @@ public class BookService {
     @Autowired
     private BookFeignClient bookFeignClient;
 
-    public Book save(BookFeign book) {
+    public Book save(Book book, String userId) {
+        BookFeign bookFeign = BookFeign.builder().
+                author(book.getAuthor()).
+                title(book.getTitle()).
+                userId(userId).
+                build();
 
-        try {
-            return bookFeignClient.saveBook(book);
-        } catch (Exception exc) {
-            logger.error(exc.getMessage());
-        }
-
-        return null;
+        return bookFeignClient.saveBook(bookFeign);
     }
 
     public List<Book> getByUserId(String userId) {

@@ -19,15 +19,14 @@ public class FilmService {
     @Autowired
     private FilmFeignClient filmFeignClient;
 
-    public Film save(FilmFeign film) {
+    public Film save(Film film, String userId) {
+        FilmFeign filmFeign = FilmFeign.builder().
+                title(film.getTitle()).
+                year(film.getYear()).
+                userId(userId).
+                build();
 
-        try {
-            return filmFeignClient.saveFilm(film);
-        } catch (Exception exc) {
-            logger.error(exc.getMessage());
-        }
-
-        return null;
+        return filmFeignClient.saveFilm(filmFeign);
     }
 
     public List<Film> getByUserId(String userId) {
