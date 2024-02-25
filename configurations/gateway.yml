@@ -37,10 +37,10 @@ spring:
       client:
         provider:
           keycloak:
-            authorization-uri: http://localhost:8081/realms/realm-JWT/protocol/openid-connect/auth
-            userinfo-uri: http://localhost:8081/realms/realm-JWT/protocol/openid-connect/userinfo
+            authorization-uri: http://localhost:8500/realms/realm-JWT/protocol/openid-connect/auth
+            userinfo-uri: http://localhost:8500/realms/realm-JWT/protocol/openid-connect/userinfo
             user-name-attribute: preferred_username
-            token-uri: http://localhost:8081/realms/realm-JWT/protocol/openid-connect/token
+            token-uri: http://localhost:8500/realms/realm-JWT/protocol/openid-connect/token
           registration:
             jwt-client:
               provider: keycloak
