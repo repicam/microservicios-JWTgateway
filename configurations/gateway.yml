@@ -41,10 +41,10 @@ spring:
             userinfo-uri: http://localhost:8500/realms/realm-JWT/protocol/openid-connect/userinfo
             user-name-attribute: preferred_username
             token-uri: http://localhost:8500/realms/realm-JWT/protocol/openid-connect/token
-          registration:
-            jwt-client:
-              provider: keycloak
-              client-id: jwt-client
-              client-secret: BYqALwtbNvL3ODc1BRJdvWrWcwWQFnzn
-              authorization-grant-type: authorization_code
-              redirect-uri: "${baseUrl}/login/oauth2/code/jwt-client"
+        registration:
+          jwt-client:
+            provider: keycloak
+            client-id: jwt-client
+            client-secret: BYqALwtbNvL3ODc1BRJdvWrWcwWQFnzn
+            authorization-grant-type: authorization_code
+            redirect-uri: "${baseUrl}/login/oauth2/code/jwt-client"
