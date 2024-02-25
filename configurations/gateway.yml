@@ -11,6 +11,8 @@ eureka:
 spring:
   cloud:
     gateway:
+      default-filters:
+        - TokenRelay
       discovery:
         locator:
           enabled: true
@@ -28,3 +30,21 @@ spring:
             uri: lb://users-microservice
             predicates:
               - Path=/api/user/**
+            filters:
+              - RemoveRequestHeader=Cookie
+  security:
+    oauth2:
+      client:
+        provider:
+          keycloak:
+            authorization-uri: http://localhost:8081/realms/realm-JWT/protocol/openid-connect/auth
+            userinfo-uri: http://localhost:8081/realms/realm-JWT/protocol/openid-connect/userinfo
+            user-name-attribute: preferred_username
+            token-uri: http://localhost:8081/realms/realm-JWT/protocol/openid-connect/token
+          registration:
+            jwt-client:
+              provider: keycloak
+              client-id: jwt-client
+              client-secret: BYqALwtbNvL3ODc1BRJdvWrWcwWQFnzn
+              authorization-grant-type: authorization_code
+              redirect-uri: "${baseUrl}/login/oauth2/code/jwt-client"
