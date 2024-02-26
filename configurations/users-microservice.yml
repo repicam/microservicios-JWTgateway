@@ -28,6 +28,9 @@ resilience4j:
         failureRateThreshold: 50
         eventConsumerBufferSize: 10
     instances:
-      allCB: default
-      films: default
-      books: default
+      allCB:
+        baseConfig: default
+      films:
+        baseConfig: default
+      books:
+        baseConfig: default
