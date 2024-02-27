@@ -27,4 +27,4 @@ spring:
           users-microservice:
             uri: lb://users-microservice
             predicates:
-              - Path=/api/user/**
+              - Path=/api/user/**,/api/auth/**

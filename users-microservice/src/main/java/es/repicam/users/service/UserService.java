@@ -31,12 +31,12 @@ public class UserService {
         return UserResponse.buildByEntityList(userRepository.findAll());
     }
 
-    public UserResponse getById(String id, boolean circuitBreaker) {
+    public UserResponse getById(String id) {
         User user = userRepository.findById(id).orElse(null);
         if (user == null)
             return new UserResponse();
 
-        return refillUserByEntity(user, circuitBreaker);
+        return refillUserByEntity(user);
     }
 
     public UserResponse save(UserRequest userRequest) {
@@ -62,7 +62,7 @@ public class UserService {
 
         bookService.save(book, userId);
 
-        return refillUserByEntity(user, false);
+        return refillUserByEntity(user);
     }
 
     public UserResponse saveFilm(String userId, Film film) {
@@ -73,15 +73,10 @@ public class UserService {
 
         filmService.save(film, userId);
 
-        return refillUserByEntity(user, false);
+        return refillUserByEntity(user);
     }
 
-    private UserResponse refillUserByEntity(User user, boolean circuitBreaker){
-        /*if (circuitBreaker)
-            return UserResponse.builder().
-                    username(user.getUsername()).
-                    id(user.getId()).
-                    build();*/
+    private UserResponse refillUserByEntity(User user){
 
         try {
             List<Book> bookList = bookService.getByUserId(user.getId());

@@ -41,7 +41,7 @@ public class UserController {
     @CircuitBreaker(name = "allCB", fallbackMethod = "fallBackGetAll")
     @GetMapping("/{id}")
     public @ResponseBody ResponseEntity<UserResponse> getById(@PathVariable String id) {
-        UserResponse user = userService.getById(id, false);
+        UserResponse user = userService.getById(id);
         if (user == null)
             return ResponseEntity.notFound().build();
 
@@ -69,7 +69,7 @@ public class UserController {
     }
 
     public ResponseEntity<UserResponse> fallBackGetAll(String id, Throwable th) {
-        UserResponse user = userService.getById(id, true);
+        UserResponse user = userService.getById(id);
         if (user == null)
             return ResponseEntity.notFound().build();
 
@@ -77,7 +77,7 @@ public class UserController {
     }
 
     public ResponseEntity<UserResponse> fallBackSaveBooks(String userId, @RequestBody Book book, Throwable th) {
-        UserResponse user = userService.getById(userId, true);
+        UserResponse user = userService.getById(userId);
         if (user == null)
             return ResponseEntity.notFound().build();
 
@@ -85,7 +85,7 @@ public class UserController {
     }
 
     public ResponseEntity<UserResponse> fallBackSaveFilms(String userId, @RequestBody Film film, Throwable th) {
-        UserResponse user = userService.getById(userId, true);
+        UserResponse user = userService.getById(userId);
         if (user == null)
             return ResponseEntity.notFound().build();
 

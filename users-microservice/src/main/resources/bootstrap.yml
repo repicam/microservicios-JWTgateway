@@ -5,3 +5,6 @@ spring:
     config:
       enabled: true
       uri: http://localhost:8081
+
+jwt:
+  secret: BOIGX8nY87PtNdE9FQFC
