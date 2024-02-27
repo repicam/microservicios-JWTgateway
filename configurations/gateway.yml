@@ -38,13 +38,14 @@ spring:
         provider:
           keycloak:
             issuer-uri: http://localhost:8500/realms/realm-JWT
-            #authorization-uri: http://localhost:8500/realms/realm-JWT/protocol/openid-connect/auth
-            #userinfo-uri: http://localhost:8500/realms/realm-JWT/protocol/openid-connect/userinfo
-            #user-name-attribute: preferred_username
-            #token-uri: http://localhost:8500/realms/realm-JWT/protocol/openid-connect/token
+            authorization-uri: http://localhost:8500/realms/realm-JWT/protocol/openid-connect/auth
+            userinfo-uri: http://localhost:8500/realms/realm-JWT/protocol/openid-connect/userinfo
+            user-name-attribute: preferred_username
+            token-uri: http://localhost:8500/realms/realm-JWT/protocol/openid-connect/token
         registration:
           keycloak:
             provider: keycloak
+            scope: openid
             client-id: jwt-client
             client-secret: BYqALwtbNvL3ODc1BRJdvWrWcwWQFnzn
             authorization-grant-type: authorization_code
