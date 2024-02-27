@@ -43,7 +43,7 @@ spring:
             #user-name-attribute: preferred_username
             #token-uri: http://localhost:8500/realms/realm-JWT/protocol/openid-connect/token
         registration:
-          jwt-client:
+          keycloak:
             provider: keycloak
             client-id: jwt-client
             client-secret: BYqALwtbNvL3ODc1BRJdvWrWcwWQFnzn
