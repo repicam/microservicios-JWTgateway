@@ -28,6 +28,8 @@ spring:
             uri: lb://users-microservice
             predicates:
               - Path=/api/user/**
+            filters:
+              - AuthFilter
           auth-microservice:
             uri: lb://users-microservice
             predicates:
