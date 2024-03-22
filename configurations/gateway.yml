@@ -14,16 +14,16 @@ spring:
       discovery:
         locator:
           enabled: true
-        routes:
-          - id: films-microservice
-            uri: lb://films-microservice
-            predicates:
-              - Path=/api/film/**
-          - id: books-microservice
-            uri: lb://books-microservice
-            predicates:
-              - Path=/api/book/**
-          - id: users-microservice
-            uri: lb://users-microservice
-            predicates:
-              - Path=/api/user/**
+      routes:
+        - id: films-microservice
+          uri: lb://films-microservice
+          predicates:
+            - Path=/api/film/**
+        - id: books-microservice
+          uri: lb://books-microservice
+          predicates:
+            - Path=/api/book/**
+        - id: users-microservice
+          uri: lb://users-microservice
+          predicates:
+            - Path=/api/user/**
