@@ -2,6 +2,7 @@ package es.repicam.users.service;
 
 import es.repicam.users.dto.FilmFeign;
 import es.repicam.users.http.FilmFeignClient;
+import es.repicam.users.model.Book;
 import es.repicam.users.model.Film;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -31,9 +32,6 @@ public class FilmService {
 
     public List<Film> getByUserId(String userId) {
         List<Film> filmList = filmFeignClient.getFilmsByUserId(userId);
-        if (filmList == null)
-            return new ArrayList<>();
-
-        return filmList;
+        return filmList != null ? filmList : new ArrayList<>();
     }
 }

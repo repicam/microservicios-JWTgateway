@@ -31,9 +31,6 @@ public class BookService {
 
     public List<Book> getByUserId(String userId) {
         List<Book> bookList = bookFeignClient.getBooksByUserId(userId);
-        if (bookList == null)
-            return new ArrayList<>();
-
-        return bookList;
+        return bookList != null ? bookList : new ArrayList<>();
     }
 }
