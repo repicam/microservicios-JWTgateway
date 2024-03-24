@@ -19,11 +19,17 @@ spring:
           uri: lb://films-microservice
           predicates:
             - Path=/api/film/**
+          filters:
+            - AuthFilter
         - id: books-microservice
           uri: lb://books-microservice
           predicates:
             - Path=/api/book/**
+          filters:
+            - AuthFilter
         - id: users-microservice
           uri: lb://users-microservice
           predicates:
             - Path=/api/user/**,/api/auth/**
+          filters:
+            - AuthFilter
