@@ -30,6 +30,4 @@ spring:
         - id: users-microservice
           uri: lb://users-microservice
           predicates:
-            - Path=/api/user/**,/api/auth/**
-          filters:
-            - AuthFilter
+            - Path=/api/user/**
